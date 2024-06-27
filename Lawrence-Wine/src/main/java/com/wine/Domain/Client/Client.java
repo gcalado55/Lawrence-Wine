@@ -1,9 +1,11 @@
-package com.wine.Domain.Entities.Client;
+package com.wine.Domain.Client;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +32,6 @@ public class Client implements Serializable {
 
     @Column(nullable = false)
     private String phone;
+
+    //private List<Order> orders = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package com.wine.Domain.Entities;
+package com.wine.Domain;
 
 public enum OrderStatus {
 
