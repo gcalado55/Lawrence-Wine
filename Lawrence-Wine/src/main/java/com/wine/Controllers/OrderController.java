@@ -1,4 +1,4 @@
-package com.wine.Resources;
+package com.wine.Controllers;
 
 import com.wine.Domain.Order.Order;
 import com.wine.Services.OrderService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/order")
-public class OrderResource {
+public class OrderController {
 
     @Autowired
     private OrderService orderService;

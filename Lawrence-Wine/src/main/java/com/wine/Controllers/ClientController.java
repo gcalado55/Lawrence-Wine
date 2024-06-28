@@ -1,4 +1,4 @@
-package com.wine.Resources;
+package com.wine.Controllers;
 
 import com.wine.Domain.Client.Client;
 import com.wine.Services.ClientService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/client")
-public class ClientResource {
+public class ClientController {
 
     @Autowired
     private ClientService clientService;
