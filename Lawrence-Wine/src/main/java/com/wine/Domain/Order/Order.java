@@ -23,14 +23,14 @@ import java.util.List;
 public class Order implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @Column(nullable = false)
     private Instant date;
 
-    private Integer orderStatus;
+    private String orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
