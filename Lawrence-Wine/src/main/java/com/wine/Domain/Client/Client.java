@@ -1,5 +1,7 @@
 package com.wine.Domain.Client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wine.Domain.Order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -33,5 +34,15 @@ public class Client implements Serializable {
     @Column(nullable = false)
     private String phone;
 
-    //private List<Order> orders = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+
+    public Client(String id, String name, String address, String email, String phone) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+    }
 }
