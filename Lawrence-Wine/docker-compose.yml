@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  postgres_nlw:
+    container_name: mysql_wine
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lawrence_wine
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
