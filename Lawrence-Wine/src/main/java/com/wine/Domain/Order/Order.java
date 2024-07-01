@@ -1,15 +1,16 @@
 package com.wine.Domain.Order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wine.Domain.Client.Client;
-import com.wine.Domain.OrderStatus;
+import com.wine.Domain.OrderedItem.OrderedItem;
+import com.wine.Domain.Wine.Wine;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @AllArgsConstructor
@@ -36,5 +37,7 @@ public class Order implements Serializable{
     @JoinColumn(name = "client_id")
     private Client client;
 
-    //private Set<OrderItem> items = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "order")
+    private List<Wine> items = new ArrayList<>();
 }
