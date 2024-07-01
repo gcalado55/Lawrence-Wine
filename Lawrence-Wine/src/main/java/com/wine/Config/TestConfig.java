@@ -12,7 +12,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.time.Instant;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Configuration
@@ -31,20 +32,27 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
-        Wine w1 = new Wine(null, "Quinta do morgado", "2018", "horrível", 30.00, 10);
+        Wine w1 = new Wine(null, "Quinta do Morgado", "2018", "horrível", 30.00, 10);
         Wine w2 = new Wine(null, "Carreteiro", "2019", "pior ainda", 40.00, 8);
 
-        Client c1 = new Client(null, "Gabriel Calado", "Rua santa Lúcia 365", "gcalado@gmail.com", "81996959564");
-        Client c2 = new Client(null, "Mirella Monteiro", "Rua hermano de barros 6120", "mmonteiro@gmail.com", "81999998888");
+        // Save Wines to database
+        wineRepository.saveAll(Arrays.asList(w1, w2));
 
-        Order o1 = new Order(null, Instant.now(), OrderStatus.AWAITING_PAYMENT.toString(), c1, w1.getOrder().getItems());
-        Order o2 = new Order(null, Instant.now(), OrderStatus.PAYMENT_CONFIRMED.toString(), c2, w2.getOrder().getItems());
+        // Create Clients
+        Client c1 = new Client(null, "Gabriel Calado", "Rua Santa Lúcia 365", "gcalado@gmail.com", "81996959564");
+        Client c2 = new Client(null, "Mirella Monteiro", "Rua Hermano de Barros 6120", "mmonteiro@gmail.com", "81999998888");
 
-        wineRepository.saveAll(Arrays.asList(w1,w2));
-        clientRepository.saveAll(Arrays.asList(c1,c2));
-        orderRepository.saveAll(Arrays.asList(o1,o2));
+        // Save Clients to database
+        clientRepository.saveAll(Arrays.asList(c1, c2));
 
+        // Create Orders and set wineBrand with the corresponding wine brand
+        Order o1 = new Order(null, LocalDateTime.now(), OrderStatus.AWAITING_PAYMENT.toString(), c1);
+        Order o2 = new Order(null, LocalDateTime.now(), OrderStatus.PAYMENT_CONFIRMED.toString(), c2);
 
+        o1.setWineBrand(w1.getBrand());
+        o2.setWineBrand(w2.getBrand());
+
+        // Save Orders to database
+        orderRepository.saveAll(Arrays.asList(o1, o2));
     }
 }

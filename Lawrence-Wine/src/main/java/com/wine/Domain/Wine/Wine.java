@@ -1,6 +1,5 @@
 package com.wine.Domain.Wine;
 
-import com.wine.Domain.Order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,20 +34,4 @@ public class Wine implements Serializable {
     @Column(nullable = false)
     private Integer stock;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
-
-    public Wine(String id, String brand, String harvest, String description, Double price, Integer stock) {
-        this.id = id;
-        this.brand = brand;
-        this.harvest = harvest;
-        this.description = description;
-        this.price = price;
-        this.stock = stock;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
 }
