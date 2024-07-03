@@ -11,40 +11,39 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/wine")
+@RequestMapping(value = "/wines")
 public class WineController {
 
     @Autowired
     private WineService wineService;
 
     @GetMapping
-    public ResponseEntity<List<Wine>> findAll(){
-        List<Wine> wines = wineService.findAll();
+    public ResponseEntity<List<Wine>> listWines(){
+        List<Wine> wines = wineService.getAllWines();
         return ResponseEntity.ok().body(wines);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Wine> findById(@PathVariable String id){
-        Wine wineObj = wineService.findById(id);
+    public ResponseEntity<Wine> findWineById(@PathVariable String wineId){
+        Wine wineObj = wineService.findWineById(wineId);
         return ResponseEntity.ok().body(wineObj);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
-        wineService.delete(id);
+    public ResponseEntity<Void> deleteWine(@PathVariable String wineId){
+        wineService.deleteWine(wineId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Wine> edit(@PathVariable String id, @RequestBody Wine obj){
-        obj = wineService.edit(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Wine> updateWine(@PathVariable String wineId, @RequestBody Wine wine){
+        wine = wineService.updateWine(wineId, wine);
+        return ResponseEntity.ok().body(wine);
     }
 
     @PostMapping
-    public ResponseEntity<Wine> register(@RequestBody Wine obj){
-        obj = wineService.register(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Wine> addWine(@RequestBody Wine wine){
+        Wine newWine = wineService.addWine(wine);
+        return ResponseEntity.ok().body(newWine);
     }
 }

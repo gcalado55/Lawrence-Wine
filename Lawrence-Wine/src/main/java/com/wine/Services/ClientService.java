@@ -19,20 +19,20 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public List<Client> findAll(){
+    public List<Client> getAllClients(){
         return clientRepository.findAll();
     }
 
-    public Client findById(String id){
+    public Client findClientById(String id){
         Optional<Client> clientObj = clientRepository.findById(id);
         return clientObj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Client register(Client obj){
+    public Client addClient(Client obj){
         return clientRepository.save(obj);
     }
 
-    public void delete(String id) {
+    public void deleteClient(String id) {
         try{
             clientRepository.deleteById(id);
         }
@@ -44,7 +44,7 @@ public class ClientService {
         }
     }
 
-    public Client edit(String id, Client obj){
+    public Client updateClient(String id, Client obj){
         try {
             Client entity = clientRepository.getReferenceById(id);
             editData(entity, obj);

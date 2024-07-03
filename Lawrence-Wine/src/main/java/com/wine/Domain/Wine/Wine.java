@@ -5,14 +5,12 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-
 @Entity
 @Table(name = "wines")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode
 public class Wine implements Serializable {
 
     @Id
@@ -33,5 +31,4 @@ public class Wine implements Serializable {
 
     @Column(nullable = false)
     private Integer stock;
-
 }

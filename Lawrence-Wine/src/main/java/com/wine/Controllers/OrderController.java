@@ -11,40 +11,39 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/orders")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<Order>> findAll(){
-        List<Order> orders = orderService.findAll();
+    public ResponseEntity<List<Order>> listOrders(){
+        List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok().body(orders);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findById(@PathVariable String id){
-        Order orderObj = orderService.findById(id);
+    public ResponseEntity<Order> findOrderById(@PathVariable String orderId){
+        Order orderObj = orderService.findOrderById(orderId);
         return ResponseEntity.ok().body(orderObj);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
-        orderService.delete(id);
+    public ResponseEntity<Void> deleteOrder(@PathVariable String orderId){
+        orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> edit(@PathVariable String id, @RequestBody Order obj){
-        obj = orderService.edit(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Order> updateOrder(@PathVariable String orderId, @RequestBody Order order){
+        order = orderService.UpdateOrder(orderId, order);
+        return ResponseEntity.ok().body(order);
     }
 
     @PostMapping
-    public ResponseEntity<Order> register(@RequestBody Order obj){
-        obj = orderService.register(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Order> addOrder(@RequestBody Order order){
+        Order newOrder = orderService.addOrder(order);
+        return ResponseEntity.ok().body(newOrder);
     }
 }

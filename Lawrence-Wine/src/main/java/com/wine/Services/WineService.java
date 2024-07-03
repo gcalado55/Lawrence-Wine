@@ -19,20 +19,20 @@ public class WineService {
     @Autowired
     private WineRepository wineRepository;
 
-    public List<Wine> findAll(){
+    public List<Wine> getAllWines(){
         return wineRepository.findAll();
     }
 
-    public Wine findById(String id){
+    public Wine findWineById(String id){
         Optional<Wine> wineObj = wineRepository.findById(id);
         return wineObj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Wine register(Wine obj){
+    public Wine addWine(Wine obj){
         return wineRepository.save(obj);
     }
 
-    public void delete(String id){
+    public void deleteWine(String id){
         try {
             wineRepository.deleteById(id);
         }
@@ -44,7 +44,7 @@ public class WineService {
         }
     }
 
-    public Wine edit(String id, Wine obj){
+    public Wine updateWine(String id, Wine obj){
         try {
             Wine entity = wineRepository.getReferenceById(id);
             editData(entity, obj);

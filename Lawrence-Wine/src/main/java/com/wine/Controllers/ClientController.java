@@ -11,41 +11,40 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/client")
+@RequestMapping(value = "/clients")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<Client>> findAll(){
-        List<Client> clients = clientService.findAll();
+    public ResponseEntity<List<Client>> listClients(){
+        List<Client> clients = clientService.getAllClients();
         return ResponseEntity.ok().body(clients);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Client> findById(@PathVariable String id){
-        Client clientObj = clientService.findById(id);
-        return ResponseEntity.ok().body(clientObj);
+    public ResponseEntity<Client> findClientById(@PathVariable String clientId){
+        Client client = clientService.findClientById(clientId);
+        return ResponseEntity.ok().body(client);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
-        clientService.delete(id);
+    public ResponseEntity<Void> deleteClient(@PathVariable String clientId){
+        clientService.deleteClient(clientId);
         return ResponseEntity.noContent().build();
     }
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Client> edit(@PathVariable String id, @RequestBody Client obj){
-        obj = clientService.edit(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Client> updateClient(@PathVariable String clientId, @RequestBody Client client){
+        client = clientService.updateClient(clientId, client);
+        return ResponseEntity.ok().body(client);
     }
 
     @PostMapping
-    public ResponseEntity<Client> register (@RequestBody Client obj){
-        obj = clientService.register(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Client> addClient (@RequestBody Client client){
+        Client newClient = clientService.addClient(client);
+        return ResponseEntity.ok().body(newClient);
     }
 }

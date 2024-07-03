@@ -19,20 +19,20 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public List<Order> findAll(){
+    public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
 
-    public Order findById(String id){
+    public Order findOrderById(String id){
         Optional<Order> orderObj = orderRepository.findById(id);
         return orderObj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Order register(Order obj){
+    public Order addOrder(Order obj){
         return orderRepository.save(obj);
     }
 
-    public void delete(String id){
+    public void deleteOrder(String id){
         try{
             orderRepository.deleteById(id);
         }
@@ -44,7 +44,7 @@ public class OrderService {
         }
     }
 
-    public Order edit(String id, Order obj){
+    public Order UpdateOrder(String id, Order obj){
         try {
             Order entity = orderRepository.getReferenceById(id);
             editData(entity, obj);
