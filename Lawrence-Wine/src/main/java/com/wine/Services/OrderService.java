@@ -23,43 +23,43 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order findOrderById(String id){
-        Optional<Order> orderObj = orderRepository.findById(id);
-        return orderObj.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Order findOrderById(String orderId){
+        Optional<Order> order = orderRepository.findById(orderId);
+        return order.orElseThrow(() -> new ResourceNotFoundException(orderId));
     }
 
-    public Order addOrder(Order obj){
-        return orderRepository.save(obj);
+    public Order addOrder(Order order){
+        return orderRepository.save(order);
     }
 
-    public void deleteOrder(String id){
+    public void deleteOrder(String orderId){
         try{
-            orderRepository.deleteById(id);
+            orderRepository.deleteById(orderId);
         }
         catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(orderId);
         }
         catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         }
     }
 
-    public Order UpdateOrder(String id, Order obj){
+    public Order UpdateOrder(String orderId, Order order){
         try {
-            Order entity = orderRepository.getReferenceById(id);
-            editData(entity, obj);
-            return orderRepository.save(entity);
+            Order newOrder = orderRepository.getReferenceById(orderId);
+            editData(newOrder, order);
+            return orderRepository.save(newOrder);
         }
         catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(orderId);
         }
     }
 
-    public void editData(Order entity, Order obj){
-        entity.setId(obj.getId());
-        entity.setDate(obj.getDate());
-        entity.setOrderStatus(obj.getOrderStatus());
-        entity.setClient(obj.getClient());
+    public void editData(Order newOrder, Order order){
+        newOrder.setId(order.getId());
+        newOrder.setDate(order.getDate());
+        newOrder.setOrderStatus(order.getOrderStatus());
+        newOrder.setClient(order.getClient());
     }
 
 

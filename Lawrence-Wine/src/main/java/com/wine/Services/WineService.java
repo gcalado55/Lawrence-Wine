@@ -23,44 +23,44 @@ public class WineService {
         return wineRepository.findAll();
     }
 
-    public Wine findWineById(String id){
-        Optional<Wine> wineObj = wineRepository.findById(id);
-        return wineObj.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Wine findWineById(String wineId){
+        Optional<Wine> wine = wineRepository.findById(wineId);
+        return wine.orElseThrow(() -> new ResourceNotFoundException(wineId));
     }
 
-    public Wine addWine(Wine obj){
-        return wineRepository.save(obj);
+    public Wine addWine(Wine wine){
+        return wineRepository.save(wine);
     }
 
-    public void deleteWine(String id){
+    public void deleteWine(String wineId){
         try {
-            wineRepository.deleteById(id);
+            wineRepository.deleteById(wineId);
         }
         catch (EmptyResultDataAccessException e){
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(wineId);
         }
         catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         }
     }
 
-    public Wine updateWine(String id, Wine obj){
+    public Wine updateWine(String wineId, Wine wine){
         try {
-            Wine entity = wineRepository.getReferenceById(id);
-            editData(entity, obj);
-            return wineRepository.save(entity);
+            Wine newWine = wineRepository.getReferenceById(wineId);
+            editData(newWine, wine);
+            return wineRepository.save(newWine);
         }
         catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(wineId);
         }
     }
 
-    public void editData(Wine entity, Wine obj){
-        entity.setId(obj.getId());
-        entity.setBrand(obj.getBrand());
-        entity.setHarvest(obj.getHarvest());
-        entity.setDescription(obj.getDescription());
-        entity.setPrice(obj.getPrice());
-        entity.setStock(obj.getStock());
+    public void editData(Wine newWine, Wine wine){
+        newWine.setId(wine.getId());
+        newWine.setBrand(wine.getBrand());
+        newWine.setHarvest(wine.getHarvest());
+        newWine.setDescription(wine.getDescription());
+        newWine.setPrice(wine.getPrice());
+        newWine.setStock(wine.getStock());
     }
 }

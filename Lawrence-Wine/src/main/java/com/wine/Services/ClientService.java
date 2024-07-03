@@ -23,43 +23,43 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public Client findClientById(String id){
-        Optional<Client> clientObj = clientRepository.findById(id);
-        return clientObj.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Client findClientById(String clientId){
+        Optional<Client> client = clientRepository.findById(clientId);
+        return client.orElseThrow(() -> new ResourceNotFoundException(clientId));
     }
 
-    public Client addClient(Client obj){
-        return clientRepository.save(obj);
+    public Client addClient(Client client){
+        return clientRepository.save(client);
     }
 
-    public void deleteClient(String id) {
+    public void deleteClient(String clientId) {
         try{
-            clientRepository.deleteById(id);
+            clientRepository.deleteById(clientId);
         }
         catch (EmptyResultDataAccessException e){
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(clientId);
         }
         catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         }
     }
 
-    public Client updateClient(String id, Client obj){
+    public Client updateClient(String clientId, Client client){
         try {
-            Client entity = clientRepository.getReferenceById(id);
-            editData(entity, obj);
-            return clientRepository.save(entity);
+            Client newClient = clientRepository.getReferenceById(clientId);
+            editData(newClient, client);
+            return clientRepository.save(newClient);
         }
         catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(clientId);
         }
     }
 
-    public void editData(Client entity, Client obj){
-        entity.setId(obj.getId());
-        entity.setName(obj.getName());
-        entity.setAddress(obj.getAddress());
-        entity.setPhone(obj.getPhone());
-        entity.setEmail(obj.getEmail());
+    public void editData(Client newClient, Client client){
+        newClient.setId(client.getId());
+        newClient.setName(client.getName());
+        newClient.setAddress(client.getAddress());
+        newClient.setPhone(client.getPhone());
+        newClient.setEmail(client.getEmail());
     }
 }
