@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,15 +45,22 @@ public class WineService {
         }
     }
 
-    public Wine updateWine(String wineId, Wine wine){
-        try {
-            Wine newWine = wineRepository.getReferenceById(wineId);
-            editData(newWine, wine);
-            return wineRepository.save(newWine);
-        }
-        catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(wineId);
-        }
+    public Wine updateWine(String wineId, Wine wineUpdated) throws Exception {
+
+            Optional<Wine> wineOpt = wineRepository.findById(wineId);
+
+            if(wineOpt.isPresent()){
+                Wine wine = wineOpt.get();
+                wine.setBrand(wineUpdated.getBrand());
+                wine.setStock(wineUpdated.getStock());
+                wine.setPrice(wineUpdated.getPrice());
+                wine.setHarvest(wineUpdated.getHarvest());
+                wine.setDescription(wineUpdated.getDescription());
+                return wineRepository.save(wine);
+            }
+
+            throw new Exception("Wine Not Found With Id: " + wineId);
+
     }
 
     public void editData(Wine newWine, Wine wine){
