@@ -5,6 +5,7 @@ import com.wine.Repositories.ClientRepository;
 import com.wine.Services.Exceptions.DatabaseException;
 import com.wine.Services.Exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import org.aspectj.apache.bcel.generic.InstructionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -44,22 +45,19 @@ public class ClientService {
         }
     }
 
-    public Client updateClient(String clientId, Client client){
-        try {
-            Client newClient = clientRepository.getReferenceById(clientId);
-            editData(newClient, client);
-            return clientRepository.save(newClient);
-        }
-        catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(clientId);
-        }
-    }
+    public Client updateClient(String clientId, Client clientUpdated) throws Exception {
 
-    public void editData(Client newClient, Client client){
-        newClient.setId(client.getId());
-        newClient.setName(client.getName());
-        newClient.setAddress(client.getAddress());
-        newClient.setPhone(client.getPhone());
-        newClient.setEmail(client.getEmail());
+            Optional<Client> clientOpt = clientRepository.findById(clientId);
+
+            if(clientOpt.isPresent()){
+                Client client = clientOpt.get();
+                client.setAddress(clientUpdated.getAddress());
+                client.setEmail(clientUpdated.getEmail());
+                client.setName(clientUpdated.getEmail());
+                client.setPhone(clientUpdated.getPhone());
+                return clientRepository.save(client);
+            }
+
+            throw new Exception("Client Not Found With Id: " + clientId);
     }
 }

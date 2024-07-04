@@ -2,6 +2,7 @@ package com.wine.Controllers;
 
 import com.wine.Domain.Client.Client;
 import com.wine.Services.ClientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/clients")
+@Slf4j
 public class ClientController {
 
     @Autowired
@@ -37,8 +39,14 @@ public class ClientController {
 
     @PutMapping(value = "/{clientId}")
     public ResponseEntity<Client> updateClient(@PathVariable String clientId, @RequestBody Client client){
-        client = clientService.updateClient(clientId, client);
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        try {
+            client = clientService.updateClient(clientId, client);
+            return new ResponseEntity<>(client, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping

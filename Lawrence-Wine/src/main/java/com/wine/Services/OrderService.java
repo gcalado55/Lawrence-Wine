@@ -44,23 +44,20 @@ public class OrderService {
         }
     }
 
-    public Order UpdateOrder(String orderId, Order order){
-        try {
-            Order newOrder = orderRepository.getReferenceById(orderId);
-            editData(newOrder, order);
-            return orderRepository.save(newOrder);
-        }
-        catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(orderId);
-        }
+    public Order UpdateOrder(String orderId, Order orderUpdated) throws Exception{
+
+            Optional<Order> orderOpt = orderRepository.findById(orderId);
+
+            if(orderOpt.isPresent()){
+                Order order = orderOpt.get();
+                order.setOrderStatus(orderUpdated.getOrderStatus());
+                order.setDate(orderUpdated.getDate());
+                order.setClient(orderUpdated.getClient());
+                order.setWineBrand(orderUpdated.getWineBrand());
+
+                return orderRepository.save(order);
+            }
+
+            throw new Exception("Order Not Found With Id: "+ orderId);
     }
-
-    public void editData(Order newOrder, Order order){
-        newOrder.setId(order.getId());
-        newOrder.setDate(order.getDate());
-        newOrder.setOrderStatus(order.getOrderStatus());
-        newOrder.setClient(order.getClient());
-    }
-
-
 }
