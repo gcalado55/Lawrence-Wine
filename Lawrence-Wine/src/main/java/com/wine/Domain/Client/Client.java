@@ -9,14 +9,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-
 @Entity
 @Table(name = "clients")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode
 public class Client implements Serializable {
 
     @Id
@@ -38,12 +36,4 @@ public class Client implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
-
-    public Client(String id, String name, String address, String email, String phone) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.phone = phone;
-    }
 }

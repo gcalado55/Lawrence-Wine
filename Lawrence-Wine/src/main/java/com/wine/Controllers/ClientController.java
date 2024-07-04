@@ -3,49 +3,47 @@ package com.wine.Controllers;
 import com.wine.Domain.Client.Client;
 import com.wine.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/client")
+@RequestMapping(value = "/clients")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<Client>> findAll(){
-        List<Client> clients = clientService.findAll();
-        return ResponseEntity.ok().body(clients);
+    public ResponseEntity<List<Client>> listClients(){
+        List<Client> clients = clientService.getAllClients();
+        return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Client> findById(@PathVariable String id){
-        Client clientObj = clientService.findById(id);
-        return ResponseEntity.ok().body(clientObj);
+    @GetMapping(value = "/{clientId}")
+    public ResponseEntity<Client> findClientById(@PathVariable String clientId){
+        Client client = clientService.findClientById(clientId);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
-        clientService.delete(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping(value = "/{clientId}")
+    public ResponseEntity<Void> deleteClient(@PathVariable String clientId){
+        clientService.deleteClient(clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Client> edit(@PathVariable String id, @RequestBody Client obj){
-        obj = clientService.edit(id, obj);
-        return ResponseEntity.ok().body(obj);
+    @PutMapping(value = "/{clientId}")
+    public ResponseEntity<Client> updateClient(@PathVariable String clientId, @RequestBody Client client){
+        client = clientService.updateClient(clientId, client);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Client> register (@RequestBody Client obj){
-        obj = clientService.register(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Client> addClient (@RequestBody Client client){
+        Client newClient = clientService.addClient(client);
+        return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 }

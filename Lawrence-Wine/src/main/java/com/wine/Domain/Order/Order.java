@@ -9,14 +9,12 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-
 @Entity
 @Table(name = "orders")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode
 public class Order implements Serializable{
 
     @Id
@@ -34,15 +32,4 @@ public class Order implements Serializable{
     private Client client;
 
     private String wineBrand;
-
-    public void setWineBrand(String wineBrand) {
-        this.wineBrand = wineBrand;
-    }
-
-    public Order(String id, LocalDateTime date, String orderStatus, Client client) {
-        this.id = id;
-        this.date = date;
-        this.orderStatus = orderStatus;
-        this.client = client;
-    }
 }
