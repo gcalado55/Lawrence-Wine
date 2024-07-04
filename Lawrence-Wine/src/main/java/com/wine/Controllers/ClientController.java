@@ -3,11 +3,10 @@ package com.wine.Controllers;
 import com.wine.Domain.Client.Client;
 import com.wine.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,31 +19,31 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<List<Client>> listClients(){
         List<Client> clients = clientService.getAllClients();
-        return ResponseEntity.ok().body(clients);
+        return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{clientId}")
     public ResponseEntity<Client> findClientById(@PathVariable String clientId){
         Client client = clientService.findClientById(clientId);
-        return ResponseEntity.ok().body(client);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{clientId}")
     public ResponseEntity<Void> deleteClient(@PathVariable String clientId){
         clientService.deleteClient(clientId);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{clientId}")
     public ResponseEntity<Client> updateClient(@PathVariable String clientId, @RequestBody Client client){
         client = clientService.updateClient(clientId, client);
-        return ResponseEntity.ok().body(client);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Client> addClient (@RequestBody Client client){
         Client newClient = clientService.addClient(client);
-        return ResponseEntity.ok().body(newClient);
+        return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 }
