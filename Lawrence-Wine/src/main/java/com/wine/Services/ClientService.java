@@ -4,8 +4,6 @@ import com.wine.Domain.Client.Client;
 import com.wine.Repositories.ClientRepository;
 import com.wine.Services.Exceptions.DatabaseException;
 import com.wine.Services.Exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
-import org.aspectj.apache.bcel.generic.InstructionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
